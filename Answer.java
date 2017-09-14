@@ -1,4 +1,7 @@
-// This is my secret FooBar workspace. I love the math I'm working with here aaaaaa
+// Answer class by Sarah Abowitz
+// This is my secret FooBar workspace. I love the math I'm working with here :D
+// The solutions I use in FooBar look like this except no System stuff
+
 import java.util.List;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -88,84 +91,66 @@ public class Answer {
       return total;
     }
     
-    // Challenge 3A 
-    public static int answer(int[] l) { 
-      Arrays.sort(l);
+    // Challenge 3A
+    public static int answer(int[] myList) { 
+      
+      // the following chunk is an override for testing large sets
+      // to use in normal mode, comment that out and change the param
+      // name to l 
+      
+      int[] l = new int[5];
+      final int NUMBER_OF_RESPONSES = 999999;
+      for(int i = 0; i < 5; i++){
+        double r = Math.random();
+        int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
+        l[i] = whichResponse+1;
+        l[i]++;
+        System.out.print(" "+l[i]);
+       }
+       
+      // this is the last bit of that chunk
+      
+      System.out.println("---");
+      
       int total = 0;
       HashSet<String> record = new HashSet<>();
       int counter = 0;
       for(int n: l){
         int m = n;
         l[counter] = -1;
-        record = isModulus(l, l.length, n, record);
+        
+        // record = isModulus(l, l.length, n, record);
+        // (int arr[], int n, int x, HashSet<String> record)
+        
+        HashSet<Integer> hset = new HashSet<>();
+        
+        if(l.length > 2) {
+         
+            for(int i = 0; i < l.length; i++){
+            if(l[i] > 0 && n % l[i] == 0 && i < counter){ // && !(x == arr[i] && x>1) ){
+              int hcounter = 0;
+              for(int h: hset){
+                String code = ""+n+" "+l[i]+" "+h;
+                if(l[i] % h==0 && !record.contains(code) && hcounter < i){ // && !(h == arr[i] && h>1)){
+                    System.out.println(code);
+                    total++;
+                    record.add(code);
+                    
+                }
+                hcounter++;
+              }
+              hset.add(l[i]);
+            }
+          }
+        }
+        
         l[counter] = m;
         counter++;   
       }
       
-      return record.size();
+      //System.out.println(l[0]);
       
-      // naive strategy I'm still leaving here
-      /*List<Integer> lookup = new ArrayList<Integer>();
-      for (int index = 0; index < l.length; index++){
-        lookup.add(l[index]);
-      }
-      List<Integer> dummy = new ArrayList<Integer>(lookup);
-      
-      Collections.sort(dummy);
-      Collections.reverse(dummy);
-      int big = dummy.get(0)+1;
-      ArrayList<String> tuples = new ArrayList<String>();
-      System.out.println("-"+big+"--");
-      
-      // don't forget to import collections!
-      for (int i=0; i < big-1; i++){
-        System.out.println("i: "+i);
-        for (int j = l[i]; j < big; j+=l[i]){
-          System.out.println("j: "+j);
-          if (lookup.lastIndexOf(j) > i){
-            for (int k = j; k < big; k+=j) {
-              System.out.println("k: "+k);
-              String t = ("{"+l[i]+" "+j+" "+k+"}");
-              System.out.print(t);
-              if(k % j ==0 && lookup.lastIndexOf(k) > lookup.indexOf(j) && !tuples.contains(t)){
-                tuples.add(t); 
-                System.out.print(" <:D ");
-              }
-              
-            }
-          }  
-        }  
-      }
-      
-      return tuples.size();*/
-    }
-      
-    static HashSet<String> isModulus(int arr[], int n, int x, HashSet<String> record)
-    {
-        // Create an empty set and insert first
-        // element into it
-        
-        HashSet<Integer> hset = new HashSet<>();
-        
-        if(n > 2) {
-         
-          // Traverse remaining elements
-            for(int i = 0; i < n; i++){
-            if(arr[i] > 0 && x % arr[i] == 0){ // && !(x == arr[i] && x>1) ){
-              
-              for(int h: hset){
-                String code = ""+x+" "+arr[i]+" "+h;
-                if(arr[i] % h==0 && !record.contains(code) ){ //&& !(h == arr[i] && h>1)){
-                    System.out.println(code);
-                    record.add(code);
-                    
-                }
-              }
-              hset.add(arr[i]);
-            }
-          }
-        }
-        return record;
+      return total;
     }
      
     }
